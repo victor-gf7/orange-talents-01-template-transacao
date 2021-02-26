@@ -1,5 +1,9 @@
 package br.com.zup.transacoes.transacao;
 
+import br.com.zup.transacoes.compra.Cartao;
+import br.com.zup.transacoes.compra.Estabelecimento;
+import br.com.zup.transacoes.compra.Transacao;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -8,20 +12,20 @@ public class TransacaoConsumer {
 
     private String id;
     private BigDecimal valor;
-    private EstabelecimentoConsumer estabelecimentoConsumer;
-    private CartaoConsumer cartaoConsumer;
+    private EstabelecimentoConsumer estabelecimento;
+    private CartaoConsumer cartao;
     private LocalDateTime efetivadaEm;
 
     @Deprecated
     public TransacaoConsumer() {
     }
 
-    public TransacaoConsumer(String id, BigDecimal valor, EstabelecimentoConsumer estabelecimentoConsumer,
-                             CartaoConsumer cartaoConsumer, LocalDateTime efetivadaEm) {
+    public TransacaoConsumer(String id, BigDecimal valor, EstabelecimentoConsumer estabelecimento,
+                             CartaoConsumer cartao, LocalDateTime efetivadaEm) {
         this.id = id;
         this.valor = valor;
-        this.estabelecimentoConsumer = estabelecimentoConsumer;
-        this.cartaoConsumer = cartaoConsumer;
+        this.estabelecimento = estabelecimento;
+        this.cartao = cartao;
         this.efetivadaEm = efetivadaEm;
     }
 
@@ -34,11 +38,11 @@ public class TransacaoConsumer {
     }
 
     public EstabelecimentoConsumer getEstabelecimento() {
-        return estabelecimentoConsumer;
+        return estabelecimento;
     }
 
-    public CartaoConsumer getCartaoConsumer() {
-        return cartaoConsumer;
+    public CartaoConsumer getCartao() {
+        return cartao;
     }
 
     public LocalDateTime getEfetivadaEm() {
@@ -50,9 +54,15 @@ public class TransacaoConsumer {
         return "TransacaoConsumer{" +
                 "id='" + id + '\'' +
                 ", valor=" + valor +
-                ", estabelecimentoConsumer=" + estabelecimentoConsumer +
-                ", cartaoConsumer=" + cartaoConsumer +
+                ", estabelecimentoConsumer=" + estabelecimento +
+                ", cartaoConsumer=" + cartao +
                 ", efetivadaEm=" + efetivadaEm +
                 '}';
+    }
+
+    public Transacao toTransacao() {
+        return new Transacao(this.id, this.valor,
+                new Estabelecimento(this.estabelecimento.getNome(), this.estabelecimento.getCidade(), this.estabelecimento.getEndereco()),
+                new Cartao(this.cartao.getId(), this.cartao.getEmail()), this.efetivadaEm);
     }
 }
